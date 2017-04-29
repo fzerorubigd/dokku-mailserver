@@ -24,6 +24,10 @@ service_create() {
   mkdir -p "$SERVICE_ROOT" || dokku_log_fail "Unable to create service directory"
   mkdir -p "$SERVICE_ROOT/data" || dokku_log_fail "Unable to create service data directory"
   mkdir -p "$SERVICE_ROOT/config" || dokku_log_fail "Unable to create service config directory"
+  
+  echo ${DOMAIN#${DOMAIN%%.*}}>"$SERVICE_ROOT/domain"
+  touch "$SERVICE_ROOT/config/postfix-accounts.cf"
+  docker run --rm -v "$SERVICE_ROOT/config:/tmp/docker-mailserver" -ti "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION" generate-dkim-config
   touch "$LINKS_FILE"
 
   if [[ -n $MAILSERVER_CUSTOM_ENV ]]; then
@@ -75,7 +79,6 @@ service_start() {
     dokku_log_verbose_quiet "Neither container nor valid configuration exists for $SERVICE"
   fi
 }
-
 
 service_password() {
     local SERVICE="$1"

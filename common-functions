@@ -170,7 +170,7 @@ service_info() {
 
 service_link() {
   declare desc="Links a service to an application"
-  declare SERVICE="$1" APP="$2"
+  declare SERVICE="$1" APP="$2" MAIL="$3"
   update_plugin_scheme_for_app "$APP"
   local SERVICE_URL=$(service_url "$SERVICE")
   local SERVICE_NAME="$(get_service_name "$SERVICE")"
@@ -199,6 +199,9 @@ service_link() {
   else
     dokku docker-options:add "$APP" build,deploy,run "--link $SERVICE_NAME:$SERVICE_ALIAS"
   fi
+  PASSWORD=$(openssl rand -hex 12)
+  docker run --rm -e "MAIL_USER=$MAIL" -e "MAIL_PASS=$PASSWORD" "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION" /bin/sh -c 'echo "$MAIL_USER|$(doveadm pw -s SHA512-CRYPT -u $MAIL_USER -p $MAIL_PASS)"' >> "$SERVICE_ROOT/config/postfix-accounts.cf"
+  
   config_set "$APP" "${ALIAS}_URL=$SERVICE_URL"
 }
 
