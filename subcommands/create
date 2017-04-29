@@ -4,12 +4,13 @@ set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 source "$PLUGIN_BASE_PATH/common/functions"
 source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/functions"
 
-redis-create-cmd() {
+mailserver-create-cmd() {
   declare desc="create a $PLUGIN_SERVICE service"
   local cmd="$PLUGIN_COMMAND_PREFIX:create" argv=("$@"); [[ ${argv[0]} == "$cmd" ]] && shift 1
   declare SERVICE="$1"
+  declare DOMAIN="$2"
 
-  service_create "$SERVICE"
+  service_create "$SERVICE" "$DOMAIN"
 }
 
-redis-create-cmd "$@"
+mailserver-create-cmd "$@"

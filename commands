@@ -11,32 +11,8 @@ if [[ ! -d $PLUGIN_DATA_ROOT ]]; then
 fi
 
 case "$1" in
-  $PLUGIN_COMMAND_PREFIX:backup)
-    "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/backup" "$@"
-    ;;
-
-  $PLUGIN_COMMAND_PREFIX:backup-auth)
-    "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/backup-auth" "$@"
-    ;;
-
-  $PLUGIN_COMMAND_PREFIX:backup-deauth)
-    "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/backup-deauth" "$@"
-    ;;
-
-  $PLUGIN_COMMAND_PREFIX:backup-schedule)
-    "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/backup-schedule" "$@"
-    ;;
-
-  $PLUGIN_COMMAND_PREFIX:backup-unschedule)
-    "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/backup-unschedule" "$@"
-    ;;
-
   $PLUGIN_COMMAND_PREFIX:clone)
     "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/clone" "$@"
-    ;;
-
-  $PLUGIN_COMMAND_PREFIX:connect)
-    "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/connect" "$@"
     ;;
 
   $PLUGIN_COMMAND_PREFIX:create)
@@ -47,16 +23,8 @@ case "$1" in
     "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/destroy" "$@"
     ;;
 
-  $PLUGIN_COMMAND_PREFIX:export)
-    "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/export" "$@"
-    ;;
-
   $PLUGIN_COMMAND_PREFIX:expose)
     "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/expose" "$@"
-    ;;
-
-  $PLUGIN_COMMAND_PREFIX:import)
-    "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands/import" "$@"
     ;;
 
   $PLUGIN_COMMAND_PREFIX:info)
