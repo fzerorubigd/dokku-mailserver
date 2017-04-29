@@ -25,8 +25,10 @@ service_create() {
   mkdir -p "$SERVICE_ROOT/data" || dokku_log_fail "Unable to create service data directory"
   mkdir -p "$SERVICE_ROOT/config" || dokku_log_fail "Unable to create service config directory"
   
-  echo ${DOMAIN#${DOMAIN%%.*}}>"$SERVICE_ROOT/domain"
+  echo $DOMAIN>"$SERVICE_ROOT/domain"
   touch "$SERVICE_ROOT/config/postfix-accounts.cf"
+  PASSWORD=$(openssl rand -hex 12)
+  docker run --rm -e "MAIL_USER=mail@$DOMAIN" -e "MAIL_PASS=$PASSWORD" "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION" /bin/sh -c 'echo "$MAIL_USER|$(doveadm pw -s SHA512-CRYPT -u $MAIL_USER -p $MAIL_PASS)"' >> "$SERVICE_ROOT/config/postfix-accounts.cf"
   docker run --rm -v "$SERVICE_ROOT/config:/tmp/docker-mailserver" -ti "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION" generate-dkim-config
   touch "$LINKS_FILE"
 
